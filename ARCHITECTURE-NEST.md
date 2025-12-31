@@ -1,27 +1,40 @@
-📋 GUÍA ARQUITECTÓNICA COMPLETA - BFF (Backend for Frontend)
-1. TIPO DE ARQUITECTURA
-Este tipo de proyecto implementa una arquitectura híbrida que combina varios patrones oficiales:
+# 📋 GUÍA ARQUITECTÓNICA COMPLETA - BFF (Backend for Frontend)
 
-🏗️ Clean Architecture / Hexagonal Architecture (Ports & Adapters)
-Core/Domain Layer: Lógica de negocio pura sin dependencias externas
-Application Layer: Casos de uso y orquestación
-Infrastructure Layer: Implementaciones concretas y adaptadores externos
-Entrypoints: Controladores HTTP que actúan como adaptadores de entrada
-📐 CQRS (Command Query Responsibility Segregation)
-Commands: Operaciones que modifican estado (createOrderCommand, updateUserCommand)
-Queries: Operaciones de solo lectura (getUserQuery, getProductsQuery)
-Separación clara entre lecturas y escrituras
-🎯 Mediator Pattern
-Desacoplamiento total entre controladores y handlers
-Uso de Mediator para enrutar Commands/Queries a sus respectivos handlers
-Implementación basada en contenedores de IoC
-🔷 Domain-Driven Design (DDD)
-Organización por features/dominios (users, orders, products, payments)
-Aggregates y Entities en la capa de dominio
-Domain Services para lógica de negocio compleja
-Repositories para abstracción de persistencia
-2. ESTRUCTURA DE CAPAS
-Code
+## 1. TIPO DE ARQUITECTURA
+
+Este tipo de proyecto implementa una arquitectura híbrida que combina varios patrones oficiales:  
+
+### 🏗️ Clean Architecture / Hexagonal Architecture (Ports & Adapters)
+
+- **Core/Domain Layer**:  Lógica de negocio pura sin dependencias externas
+- **Application Layer**: Casos de uso y orquestación
+- **Infrastructure Layer**: Implementaciones concretas y adaptadores externos
+- **Entrypoints**: Controladores HTTP que actúan como adaptadores de entrada
+
+### 📐 CQRS (Command Query Responsibility Segregation)
+
+- **Commands**: Operaciones que modifican estado (`createOrderCommand`, `updateUserCommand`)
+- **Queries**: Operaciones de solo lectura (`getUserQuery`, `getProductsQuery`)
+- Separación clara entre lecturas y escrituras
+
+### 🎯 Mediator Pattern
+
+- Desacoplamiento total entre controladores y handlers
+- Uso de Mediator para enrutar Commands/Queries a sus respectivos handlers
+- Implementación basada en contenedores de IoC
+
+### 🔷 Domain-Driven Design (DDD)
+
+- Organización por features/dominios (users, orders, products, payments)
+- Aggregates y Entities en la capa de dominio
+- Domain Services para lógica de negocio compleja
+- Repositories para abstracción de persistencia
+
+---
+
+## 2. ESTRUCTURA DE CAPAS
+
+```
 ┌─────────────────────────────────────────────────────┐
 │           ENTRYPOINTS (Controllers)                 │
 │         - REST API Controllers                      │
@@ -54,76 +67,112 @@ Code
 │         - Mappers                                   │
 │         - Framework (HttpClient, Cache, etc.)       │
 └─────────────────────────────────────────────────────┘
-3. TECNOLOGÍAS Y HERRAMIENTAS PRINCIPALES
-🚀 Backend Framework
-Node.js (LTS version recomendada)
-Express.js - Framework web minimalista y extensible
-NestJS - Framework opinionado con arquitectura modular
-TypeScript - Lenguaje tipado para mejor mantenibilidad
-📦 Dependency Injection
-TypeDI / InversifyJS / TSyringe - Contenedor IoC
-NestJS DI Container - Sistema nativo de inyección de dependencias
-Decorador @Service() / @Injectable() para registro de servicios
-Inyección mediante @Inject()
-Soporte para scopes: Singleton, Request, Transient
-🔌 HTTP Client & Resilience
-Axios - Cliente HTTP con interceptors
-axios-retry - Reintentos automáticos con backoff exponencial
-Opossum / Brakes - Circuit Breaker pattern
-Decorador @WithBreaker() para resiliencia
-🧪 Testing
-Jest / Vitest - Framework de testing
-ts-jest - Soporte TypeScript
-Supertest - Testing de APIs HTTP
-jest-when / sinon - Mocking avanzado
-Coverage configurado con thresholds
-📊 Logging & Monitoring
-Winston / Pino / log4js - Sistema de logging estructurado
-cls-hooked / AsyncLocalStorage - Context propagation (Correlation IDs)
-Trazabilidad con X-Correlation-ID o X-Request-ID
-Logging interceptors para request/response tracking
-💾 Cache
-ioredis - Cliente Redis enterprise-ready
-node-cache - Cache en memoria simple
-Sistema de cache con TTL y buckets configurables
-🔐 Seguridad
-jsonwebtoken / jwt-decode - Manejo de tokens JWT
-@nestjs/jwt - Módulo JWT para NestJS
-helmet - Seguridad HTTP headers
-express-rate-limit - Rate limiting
-class-validator - Validación de DTOs
-class-transformer - Transformación de datos
-Middlewares de autenticación y autorización
-CORS configurado según necesidades
-📝 Documentación API
-swagger-jsdoc - Generación de specs OpenAPI
-swagger-ui-express - UI interactiva
-@nestjs/swagger - Integración Swagger para NestJS
-🏗️ Build & Deploy
-Docker - Containerización
-Kubernetes / OpenShift - Orquestación
-GitHub Actions / GitLab CI / Jenkins - CI/CD
-Docker Hub / AWS ECR / Quay Registry - Registro de imágenes
-4. PATRONES DE DISEÑO IMPLEMENTADOS
-🎨 Creacionales
-Factory Pattern: Creación de instancias de HTTP clients, loggers, etc.
-Singleton: Container de IoC, configuraciones
-Builder Pattern: Construcción de objetos complejos (DTOs, Requests)
-🔧 Estructurales
-Adapter Pattern: API Clients adaptando servicios externos
-Decorator Pattern: Decoradores custom (@Controller, @Get, @Service, etc.)
-Proxy Pattern: Middlewares como proxies de request, proxy services
-Facade Pattern: HTTP Service Facade para abstraer comunicaciones
-⚙️ Comportamiento
-Mediator/Dispatcher Pattern: Desacoplamiento de comandos/queries
-Chain of Responsibility: Middlewares en Express/NestJS
-Strategy Pattern: Lógicas variables según contexto
-Repository Pattern: Abstracción de acceso a datos
-Circuit Breaker Pattern: Protección contra fallos en cascada
-Observer Pattern: Event-driven architecture (opcional)
-5. FEATURES CLAVE DEL FRAMEWORK
-🎯 Sistema de Decoradores
-TypeScript
+```
+
+---
+
+## 3. TECNOLOGÍAS Y HERRAMIENTAS PRINCIPALES
+
+### 🚀 Backend Framework
+
+- **Node.js** (LTS version recomendada)
+- **Express. js** - Framework web minimalista y extensible
+- **NestJS** - Framework opinionado con arquitectura modular
+- **TypeScript** - Lenguaje tipado para mejor mantenibilidad
+
+### 📦 Dependency Injection
+
+- **TypeDI / InversifyJS / TSyringe** - Contenedor IoC
+- **NestJS DI Container** - Sistema nativo de inyección de dependencias
+- Decorador `@Service()` / `@Injectable()` para registro de servicios
+- Inyección mediante `@Inject()`
+- Soporte para scopes:  Singleton, Request, Transient
+
+### 🔌 HTTP Client & Resilience
+
+- **Axios** - Cliente HTTP con interceptors
+- **axios-retry** - Reintentos automáticos con backoff exponencial
+- **Opossum / Brakes** - Circuit Breaker pattern
+- Decorador `@WithBreaker()` para resiliencia
+
+### 🧪 Testing
+
+- **Jest / Vitest** - Framework de testing
+- **ts-jest** - Soporte TypeScript
+- **Supertest** - Testing de APIs HTTP
+- **jest-when / sinon** - Mocking avanzado
+- Coverage configurado con thresholds
+
+### 📊 Logging & Monitoring
+
+- **Winston / Pino / log4js** - Sistema de logging estructurado
+- **cls-hooked / AsyncLocalStorage** - Context propagation (Correlation IDs)
+- Trazabilidad con `X-Correlation-ID` o `X-Request-ID`
+- Logging interceptors para request/response tracking
+
+### 💾 Cache
+
+- **ioredis** - Cliente Redis enterprise-ready
+- **node-cache** - Cache en memoria simple
+- Sistema de cache con TTL y buckets configurables
+
+### 🔐 Seguridad
+
+- **jsonwebtoken / jwt-decode** - Manejo de tokens JWT
+- **@nestjs/jwt** - Módulo JWT para NestJS
+- **helmet** - Seguridad HTTP headers
+- **express-rate-limit** - Rate limiting
+- **class-validator** - Validación de DTOs
+- **class-transformer** - Transformación de datos
+- Middlewares de autenticación y autorización
+- CORS configurado según necesidades
+
+### 📝 Documentación API
+
+- **swagger-jsdoc** - Generación de specs OpenAPI
+- **swagger-ui-express** - UI interactiva
+- **@nestjs/swagger** - Integración Swagger para NestJS
+
+### 🏗️ Build & Deploy
+
+- **Docker** - Containerización
+- **Kubernetes / OpenShift** - Orquestación
+- **GitHub Actions / GitLab CI / Jenkins** - CI/CD
+- **Docker Hub / AWS ECR / Quay Registry** - Registro de imágenes
+
+---
+
+## 4. PATRONES DE DISEÑO IMPLEMENTADOS
+
+### 🎨 Creacionales
+
+- **Factory Pattern**:  Creación de instancias de HTTP clients, loggers, etc.
+- **Singleton**:  Container de IoC, configuraciones
+- **Builder Pattern**: Construcción de objetos complejos (DTOs, Requests)
+
+### 🔧 Estructurales
+
+- **Adapter Pattern**: API Clients adaptando servicios externos
+- **Decorator Pattern**:  Decoradores custom (@Controller, @Get, @Service, etc.)
+- **Proxy Pattern**: Middlewares como proxies de request, proxy services
+- **Facade Pattern**: HTTP Service Facade para abstraer comunicaciones
+
+### ⚙️ Comportamiento
+
+- **Mediator/Dispatcher Pattern**: Desacoplamiento de comandos/queries
+- **Chain of Responsibility**: Middlewares en Express/NestJS
+- **Strategy Pattern**: Lógicas variables según contexto
+- **Repository Pattern**: Abstracción de acceso a datos
+- **Circuit Breaker Pattern**: Protección contra fallos en cascada
+- **Observer Pattern**: Event-driven architecture (opcional)
+
+---
+
+## 5. FEATURES CLAVE DEL FRAMEWORK
+
+### 🎯 Sistema de Decoradores
+
+```typescript
 // Express/Custom Framework
 @Controller('path')          // Define controladores
 @Get({ query: QueryClass })  // Métodos HTTP
@@ -136,20 +185,24 @@ TypeScript
 
 // NestJS
 @Controller('path')
-@Get(': id')
+@Get(':id')
 @Post()
 @UseGuards(AuthGuard)
 @UseInterceptors(LoggingInterceptor)
 @Injectable()
 @RequestHandler(QueryClass)
 @Public()                    // Rutas públicas sin auth
-📡 Sistema de Mediator/Dispatcher
-Auto-discovery de handlers mediante reflection
-Routing automático basado en tipos
-Manejo de errores centralizado
-Pipeline de behaviors (validación, logging, etc.)
-Request-scoped para contexto aislado por petición
-TypeScript
+```
+
+### 📡 Sistema de Mediator/Dispatcher
+
+- Auto-discovery de handlers mediante reflection
+- Routing automático basado en tipos
+- Manejo de errores centralizado
+- Pipeline de behaviors (validación, logging, etc.)
+- Request-scoped para contexto aislado por petición
+
+```typescript
 // Dispatcher Pattern
 Controller → Dispatcher → RequestHandler → Service → External API
 
@@ -159,22 +212,32 @@ Controller → Dispatcher → RequestHandler → Service → External API
 // 3. Dispatcher resuelve el handler apropiado vía metadata
 // 4. Handler ejecuta lógica de negocio
 // 5. Retorna resultado al controller
-🌐 HTTP Client Framework
-Configuración centralizada por servicio
-Interceptors de request/response
-Logging automático con correlation IDs
-Reintentos y circuit breakers
-Timeout management
-Request/Response transformation
-🧱 Application Framework
-Sistema de middleware con safety wrapper
-Auto-registro de rutas y controladores
-Validación automática de DTOs con class-validator
-Error handling centralizado
-Transform pipes para conversión automática
-6. ORGANIZACIÓN POR FEATURES (Vertical Slicing)
-Opción 1: Express/Custom Framework
-Code
+```
+
+### 🌐 HTTP Client Framework
+
+- Configuración centralizada por servicio
+- Interceptors de request/response
+- Logging automático con correlation IDs
+- Reintentos y circuit breakers
+- Timeout management
+- Request/Response transformation
+
+### 🧱 Application Framework
+
+- Sistema de middleware con safety wrapper
+- Auto-registro de rutas y controladores
+- Validación automática de DTOs con `class-validator`
+- Error handling centralizado
+- Transform pipes para conversión automática
+
+---
+
+## 6. ORGANIZACIÓN POR FEATURES (Vertical Slicing)
+
+### Opción 1: Express/Custom Framework
+
+```
 src/
 ├── core/
 │   ├── application/
@@ -209,8 +272,11 @@ src/
     └── controllers/
         └── users/
             └── userController.ts          # Controlador HTTP
-Opción 2: NestJS
-Code
+```
+
+### Opción 2: NestJS
+
+```
 src/
 ├── api/                                   # CAPA DE PRESENTACIÓN
 │   ├── main.ts                            # Entry point
@@ -269,9 +335,15 @@ src/
         │   ├── service. ts
         │   └── proxy-service.ts
         └── consistency/
-7. CONFIGURACIÓN Y AMBIENTES
-Gestión de Configuración
-Code
+```
+
+---
+
+## 7. CONFIGURACIÓN Y AMBIENTES
+
+### Gestión de Configuración
+
+```
 config/
 ├── default.yaml          // Configuración base
 ├── development.yaml      // Desarrollo local
@@ -280,15 +352,18 @@ config/
 ├── staging.yaml         // UAT/Pre-producción
 ├── production.yaml      // Producción
 └── test.yaml           // Testing
-Estructura de Configuración YAML
-YAML
+```
+
+### Estructura de Configuración YAML
+
+```yaml
 # development.yaml
 NODE_ENV: development
 APP_NAME: bff-service
 PORT: 3000
 
 CORS: 
-  ORIGIN:  ["http://localhost:3000", "http://localhost:4200"]
+  ORIGIN: ["http://localhost:3000", "http://localhost:4200"]
   METHODS: ["GET", "POST", "PUT", "PATCH", "DELETE"]
   CREDENTIALS: true
 
@@ -312,19 +387,30 @@ DEPLOYMENT:
   REPLICAS: 2
   CPU_LIMIT: 500m
   MEMORY_LIMIT: 512Mi
-Variables de Entorno
-Secrets: Credenciales, API keys, tokens (JWT_SECRET, DB_PASSWORD)
-ConfigMaps: Configuración no sensible
-Environment-specific: URLs, timeouts, feature flags
-Health Checks
-Code
+```
+
+### Variables de Entorno
+
+- **Secrets**: Credenciales, API keys, tokens (JWT_SECRET, DB_PASSWORD)
+- **ConfigMaps**: Configuración no sensible
+- **Environment-specific**: URLs, timeouts, feature flags
+
+### Health Checks
+
+```
 GET /health              // Basic health
 GET /health/liveness     // Kubernetes/OpenShift liveness probe
 GET /health/readiness    // Kubernetes/OpenShift readiness probe
 GET /metrics             // Prometheus metrics (opcional)
-8. CI/CD PIPELINE
-Pipeline Stages
-YAML
+```
+
+---
+
+## 8. CI/CD PIPELINE
+
+### Pipeline Stages
+
+```yaml
 stages:
   - install     # Instalar dependencias
   - lint        # Linting y formateo
@@ -333,8 +419,11 @@ stages:
   - build       # Build de aplicación
   - docker      # Build de imagen Docker
   - deploy      # Deployment a ambientes
-Ejemplo de Pipeline (GitLab CI)
-YAML
+```
+
+### Ejemplo de Pipeline (GitLab CI)
+
+```yaml
 # .gitlab-ci.yml
 
 variables:
@@ -348,25 +437,25 @@ stages:
   - build-image
   - deploy
 
-package:
+package: 
   stage: package
-  script:
+  script: 
     - npm ci
   artifacts:
     paths:
       - node_modules/
     expire_in: 1 hour
 
-test:
+test: 
   stage: test
   script:
     - npm run test: cov
-  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\. ]+)/'
   artifacts:
     reports: 
       coverage_report:
         coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
+        path:  coverage/cobertura-coverage. xml
 
 quality:
   stage: quality
@@ -392,7 +481,7 @@ deploy-dev:
   when: on_success
 
 deploy-staging:
-  stage:  deploy
+  stage: deploy
   script:
     - oc apply -f k8s/deployment-staging.yaml
   only:
@@ -406,22 +495,27 @@ deploy-prod:
   only:
     - main
   when: manual
-Detalle de Etapas
-Install/Package: npm ci (reproducible installs)
-Lint: eslint + prettier
-Test:
-Unit tests con coverage mínimo (>80%)
-Integration tests
-E2E tests (opcional)
-Quality: SonarQube analysis (code smells, vulnerabilities, coverage)
-Build: TypeScript compilation
-Docker Build: Multi-stage Docker build → Registry (Quay/ECR)
-Deploy:
-Dev → automático
-Staging → automático con aprobación
-Production → manual con aprobación
-GitFlow Strategy
-Code
+```
+
+### Detalle de Etapas
+
+1. **Install/Package**:  `npm ci` (reproducible installs)
+2. **Lint**: eslint + prettier
+3. **Test**:
+   - Unit tests con coverage mínimo (>80%)
+   - Integration tests
+   - E2E tests (opcional)
+4. **Quality**: SonarQube analysis (code smells, vulnerabilities, coverage)
+5. **Build**: TypeScript compilation
+6. **Docker Build**: Multi-stage Docker build → Registry (Quay/ECR)
+7. **Deploy**:
+   - Dev → automático
+   - Staging → automático con aprobación
+   - Production → manual con aprobación
+
+### GitFlow Strategy
+
+```
 main (protected)     → Producción
   ↑
 staging (protected)  → UAT/Pre-producción
@@ -431,46 +525,64 @@ development          → Integración continua
 feature/*           → Desarrollo de features
 hotfix/*            → Parches urgentes
 release/*           → Preparación de releases
-Merge Requests:
+```
 
-Requieren aprobación
-Pasan quality gates
-Tests exitosos
-9. PRINCIPIOS ARQUITECTÓNICOS APLICADOS
-✅ SOLID Principles
-S - Single Responsibility: Cada clase/módulo una responsabilidad
-O - Open/Closed: Extensible mediante decoradores y plugins
-L - Liskov Substitution: Interfaces respetadas
-I - Interface Segregation: Interfaces específicas por feature
-D - Dependency Inversion: Dependencias hacia abstracciones
-✅ Separation of Concerns
-Capas bien definidas con responsabilidades claras:
+**Merge Requests**:
+- Requieren aprobación
+- Pasan quality gates
+- Tests exitosos
 
-API Layer: Manejo de HTTP, validación de entrada
-Core Layer: Lógica de negocio pura
-Infrastructure Layer: Implementaciones técnicas
-✅ Dependency Rule
+---
+
+## 9. PRINCIPIOS ARQUITECTÓNICOS APLICADOS
+
+### ✅ SOLID Principles
+
+- **S** - Single Responsibility:  Cada clase/módulo una responsabilidad
+- **O** - Open/Closed: Extensible mediante decoradores y plugins
+- **L** - Liskov Substitution: Interfaces respetadas
+- **I** - Interface Segregation: Interfaces específicas por feature
+- **D** - Dependency Inversion: Dependencias hacia abstracciones
+
+### ✅ Separation of Concerns
+
+Capas bien definidas con responsabilidades claras: 
+- **API Layer**: Manejo de HTTP, validación de entrada
+- **Core Layer**: Lógica de negocio pura
+- **Infrastructure Layer**:  Implementaciones técnicas
+
+### ✅ Dependency Rule
+
 Las dependencias apuntan hacia adentro (hacia el dominio):
-
-Code
+```
 Infrastructure → Application → Domain
      ↓               ↓            ↓
   (adapters)    (use cases)  (entities)
-✅ DRY (Don't Repeat Yourself)
+```
+
+### ✅ DRY (Don't Repeat Yourself)
+
 Framework reutilizable, seed-work compartido, utilities
 
-✅ YAGNI (You Aren't Gonna Need It)
+### ✅ YAGNI (You Aren't Gonna Need It)
+
 No sobre-ingeniería, solo lo necesario
 
-✅ Request-Scoped Services
+### ✅ Request-Scoped Services
+
 Context aislado por petición HTTP para thread-safety
 
-✅ Metadata-Driven Architecture
+### ✅ Metadata-Driven Architecture
+
 Decorators para configuración declarativa
 
-10. ESTRUCTURA DE ARCHIVOS COMPLETA
-Express/Custom Framework
-Code
+---
+
+## 10. ESTRUCTURA DE ARCHIVOS COMPLETA
+
+### Express/Custom Framework
+
+```
 project-root/
 ├── src/
 │   ├── core/
@@ -517,8 +629,11 @@ project-root/
 ├── tsconfig.json                    # TypeScript config
 ├── package.json                     # Dependencies
 └── README.md                        # Documentation
-NestJS
-Code
+```
+
+### NestJS
+
+```
 project-root/
 ├── src/
 │   ├── api/                         # CAPA DE PRESENTACIÓN
@@ -539,7 +654,7 @@ project-root/
 │   │   │       └── services/
 │   │   ├── seed-work/               # Building blocks
 │   │   │   ├── dispatcher.ts
-│   │   │   ├── request-handler-decorator.ts
+│   │   │   ├── request-handler-decorator. ts
 │   │   │   ├── cqrs/
 │   │   │   ├── current-user-accessor/
 │   │   │   └── interfaces/
@@ -549,7 +664,7 @@ project-root/
 │       │   ├── bootstrap.ts
 │       │   ├── config/
 │       │   │   ├── app/
-│       │   │   │   ├── swagger-config. ts
+│       │   │   │   ├── swagger-config.ts
 │       │   │   │   ├── cors-config.ts
 │       │   │   │   ├── pipes-config.ts
 │       │   │   │   └── body-parser-config.ts
@@ -563,7 +678,7 @@ project-root/
 │       │   │   ├── app.module.ts
 │       │   │   └── features/
 │       │   │       ├── business.module.ts
-│       │   │       ├── health.module.ts
+│       │   │       ├── health.module. ts
 │       │   │       ├── logger.module.ts
 │       │   │       └── currentUser.module.ts
 │       │   ├── http-clients/
@@ -574,7 +689,7 @@ project-root/
 │               ├── service.ts
 │               └── proxy-service.ts
 ├── config/                          # Configuración por ambiente
-│   ├── default.yaml
+│   ├── default. yaml
 │   ├── development.yaml
 │   ├── ci. yaml
 │   ├── sandbox.yaml
@@ -589,10 +704,17 @@ project-root/
 ├── jest.config.js
 ├── . gitlab-ci.yml / .github/workflows/
 └── README.md
-11. SEGURIDAD
-🔒 Autenticación JWT
-Guard de Autenticación
-TypeScript
+```
+
+---
+
+## 11. SEGURIDAD
+
+### 🔒 Autenticación JWT
+
+#### Guard de Autenticación
+
+```typescript
 // auth-guard.ts
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -630,22 +752,24 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractToken(request: Request): string | null {
-    const authorization = request. headers.authorization;
-    if (! authorization) return null;
+    const authorization = request.headers.authorization;
+    if (!authorization) return null;
 
     // Soportar múltiples esquemas (Bearer, etc.)
     const [scheme, token] = authorization.split(' ');
     return scheme === 'Bearer' ? token :  null;
   }
 }
-Características:
+```
 
-Validación de token JWT del header Authorization
-Soporte para múltiples esquemas de autenticación
-Decodifica payload y lo inyecta en el request
-Decorator @Public() para endpoints públicos
-Lanza UnauthorizedException si falla
-TypeScript
+**Características**:
+- Validación de token JWT del header `Authorization`
+- Soporte para múltiples esquemas de autenticación
+- Decodifica payload y lo inyecta en el request
+- Decorator `@Public()` para endpoints públicos
+- Lanza `UnauthorizedException` si falla
+
+```typescript
 // Uso en controladores
 @Controller('users')
 @UseGuards(AuthGuard)
@@ -662,11 +786,14 @@ export class UsersController {
     // Ruta pública
   }
 }
-🔑 Current User Accessor
-Request-scoped service que extrae información del usuario:
+```
 
-TypeScript
-@Injectable({ scope:  Scope.REQUEST })
+### 🔑 Current User Accessor
+
+Request-scoped service que extrae información del usuario: 
+
+```typescript
+@Injectable({ scope: Scope.REQUEST })
 export class CurrentUserAccessor {
   constructor(@Inject(REQUEST) private request: Request) {}
 
@@ -686,9 +813,10 @@ export class CurrentUserAccessor {
     return this.roles.includes(role);
   }
 }
-Uso en servicios:
+```
 
-TypeScript
+**Uso en servicios**:
+```typescript
 @Injectable()
 export class OrdersService {
   constructor(private currentUser: CurrentUserAccessor) {}
@@ -698,10 +826,13 @@ export class OrdersService {
     // Lógica de negocio con userId
   }
 }
-📊 Correlation ID
-Middleware de trazabilidad:
+```
 
-TypeScript
+### 📊 Correlation ID
+
+Middleware de trazabilidad: 
+
+```typescript
 // correlation-id-middleware.ts
 @Injectable()
 export class CorrelationIdMiddleware implements NestMiddleware {
@@ -714,23 +845,26 @@ export class CorrelationIdMiddleware implements NestMiddleware {
     }
 
     // Inyectar en headers de request y response
-    req.headers['x-correlation-id'] = correlationId;
+    req. headers['x-correlation-id'] = correlationId;
     res.setHeader('X-Correlation-ID', correlationId);
 
     next();
   }
 }
-Características:
+```
 
-Header: X-Correlation-ID
-Genera UUID v4 si no existe
-Prefijo AUTO- para IDs autogenerados
-Facilita trazabilidad entre microservicios
-Se propaga a servicios externos
-🛡️ Helmet. js
+**Características**:
+- Header:  `X-Correlation-ID`
+- Genera UUID v4 si no existe
+- Prefijo `AUTO-` para IDs autogenerados
+- Facilita trazabilidad entre microservicios
+- Se propaga a servicios externos
+
+### 🛡️ Helmet. js
+
 Protección contra vulnerabilidades web comunes:
 
-TypeScript
+```typescript
 // main.ts
 import helmet from 'helmet';
 
@@ -754,8 +888,11 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
-🔐 CORS Configurable
-TypeScript
+```
+
+### 🔐 CORS Configurable
+
+```typescript
 // cors-config.ts
 export const corsConfig = (config: ConfigService) => ({
   origin: config.get<string[]>('CORS. ORIGIN'),
@@ -767,21 +904,26 @@ export const corsConfig = (config: ConfigService) => ({
 
 // main.ts
 app.enableCors(corsConfig(configService));
-YAML
+```
+
+```yaml
 # config/development.yaml
 CORS:
   ORIGIN: 
     - http://localhost:3000
     - http://localhost:4200
-  METHODS: 
+  METHODS:
     - GET
     - POST
     - PUT
     - PATCH
     - DELETE
   CREDENTIALS: true
-✅ Validación de Datos
-TypeScript
+```
+
+### ✅ Validación de Datos
+
+```typescript
 // main.ts
 app.useGlobalPipes(
   new ValidationPipe({
@@ -800,7 +942,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(50)
-  name:  string;
+  name: string;
 
   @IsEmail()
   email: string;
@@ -815,9 +957,15 @@ export class CreateUserDto {
   @IsOptional()
   roles?: string[];
 }
-12. LOGGING & OBSERVABILIDAD
-📡 Logging Interceptor
-TypeScript
+```
+
+---
+
+## 12. LOGGING & OBSERVABILIDAD
+
+### 📡 Logging Interceptor
+
+```typescript
 // logging-interceptor.ts
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -876,7 +1024,7 @@ export class LoggingInterceptor implements NestInterceptor {
     );
   }
 
-  private sanitizeHeaders(headers:  any): any {
+  private sanitizeHeaders(headers: any): any {
     const sanitized = { ...headers };
     // Ocultar información sensible
     if (sanitized.authorization) {
@@ -885,8 +1033,8 @@ export class LoggingInterceptor implements NestInterceptor {
     return sanitized;
   }
 
-  private sanitizeBody(body:  any): any {
-    if (! body) return body;
+  private sanitizeBody(body: any): any {
+    if (!body) return body;
     
     const sensitiveFields = ['password', 'token', 'secret', 'apiKey'];
     const sanitized = { ...body };
@@ -900,23 +1048,27 @@ export class LoggingInterceptor implements NestInterceptor {
     return sanitized;
   }
 }
-Se registra:
+```
 
-✅ HTTP REQUEST: URL, método, headers, body
-✅ HTTP RESPONSE: status code, response time, body
-✅ Errores y excepciones con stack trace
-✅ Correlation ID para trazabilidad
-✅ Sanitización de información sensible
-Aplicación global:
+**Se registra**:
+- ✅ HTTP REQUEST:  URL, método, headers, body
+- ✅ HTTP RESPONSE: status code, response time, body
+- ✅ Errores y excepciones con stack trace
+- ✅ Correlation ID para trazabilidad
+- ✅ Sanitización de información sensible
 
-TypeScript
+**Aplicación global**:
+```typescript
 // main.ts
 app.useGlobalInterceptors(
   new LoggingInterceptor(app.get(Logger))
 );
-📊 Structured Logging
-TypeScript
-// logger. service.ts
+```
+
+### 📊 Structured Logging
+
+```typescript
+// logger.service.ts
 @Injectable()
 export class Logger {
   private winston: winston.Logger;
@@ -945,227 +1097,189 @@ export class Logger {
   }
 
   warn(message: any, context?: string) {
-    this.winston.warn({ ...message, context });
+    this.winston. warn({ ...message, context });
   }
 
   debug(message: any, context?: string) {
     this.winston.debug({ ...message, context });
   }
 }
-13. IMPLEMENTACIÓN PASO A PASO
-Fase 1: Setup Inicial (Semana 1)
-✅ Inicializar proyecto Node.js + TypeScript
-✅ Configurar ESLint + Prettier
-✅ Setup Jest para testing
-✅ Configurar estructura de carpetas
-✅ Implementar configuración por ambientes (YAML)
-✅ Setup Docker y docker-compose
-Fase 2: Framework Base (Semana 2-3)
-✅ Implementar sistema de decoradores
-✅ Crear base classes (Command, Query, Entity)
-✅ Implementar Dispatcher/Mediator pattern
-✅ Setup Dependency Injection (NestJS/TypeDI)
-✅ Crear HttpClient con interceptors
-✅ Configurar módulos principales
-Fase 3: Infrastructure (Semana 4)
-✅ Implementar logging con correlation IDs
-✅ Configurar Circuit Breaker
-✅ Implementar cache system
-✅ Setup error handling global
-✅ Crear middlewares (auth, validation)
-✅ Configurar guards e interceptors
-✅ Setup Swagger/OpenAPI
-Fase 4: Primera Feature (Semana 5)
-✅ Implementar una feature completa (ej: Users)
-✅ Crear controlador con decoradores
-✅ Implementar Commands y Queries
-✅ Crear handlers y servicios
-✅ Implementar proxy services
-✅ Crear tests unitarios e integración
-✅ Documentar con Swagger
-Fase 5: DevOps (Semana 6)
-✅ Crear Dockerfile multi-stage
-✅ Configurar docker-compose para local
-✅ Setup CI/CD pipeline (GitLab/GitHub)
-✅ Configurar health checks y probes
-✅ Crear manifests de Kubernetes/OpenShift
-✅ Deploy a ambiente de desarrollo
-✅ Configurar SonarQube
-14. CHECKLIST DE CALIDAD
-📋 Code Quality
- Cobertura de tests > 80%
- Linting sin errores
- Type safety sin any explícitos
- Documentación de código (JSDoc/TSDoc)
- Code review aprobado
- SonarQube quality gate passed
-🔒 Seguridad
- Dependencias sin vulnerabilidades críticas (npm audit)
- Secrets no en código (usar variables de entorno)
- HTTPS enforced en producción
- Rate limiting implementado
- Input validation en todos los endpoints
- JWT con expiración configurada
- Helmet.js configurado
- CORS restrictivo
-⚡ Performance
- Response time < 200ms (endpoints simples)
- Cache implementado donde corresponde
- Connection pooling configurado
- Timeouts apropiados en HTTP clients
- Compression habilitado (gzip)
- Payload size limits configurados
-📊 Observabilidad
- Logging estructurado (JSON)
- Correlation IDs en todas las requests
- Health checks funcionando (liveness/readiness)
- Métricas exportadas (Prometheus, opcional)
- Error tracking configurado
- Request/Response logging
-🏗️ Deployment
- Dockerfile optimizado (multi-stage)
- Image size < 500MB
- CI/CD pipeline funcionando
- Kubernetes/OpenShift manifests validados
- Probes configuradas correctamente
- Resource limits definidos
- ConfigMaps y Secrets externalizados
-15. TECNOLOGÍAS ALTERNATIVAS
-Framework Web
-Express.js - Minimalista, flexible, gran ecosistema
-NestJS ← Recomendado para BFF - Opinionado, modular, TypeScript-first
-Fastify - Más rápido, moderno, schema-based
-Koa - Minimalista, del team de Express
-Dependency Injection
-NestJS DI Container ← Recomendado si usas NestJS
-TypeDI - Decorators, similar a NestJS
-InversifyJS - Más maduro, SOLID-compliant
-TSyringe - Microsoft, lightweight
-Awilix - Simple y efectivo
-HTTP Client
-Axios ← Más usado - Interceptors, cancelación, promise-based
-Got - Más moderno, promise-based
-node-fetch - Estándar web, simple
-Undici - HTTP/1.1 client oficial Node.js, más rápido
-Testing
-Jest ← Más popular - All-in-one, snapshot testing
-Vitest - Más rápido, ESM nativo, compatible con Jest
-AVA - Minimalista, concurrente
-Mocha + Chai - Clásico, modular
-Logging
-Winston ← Más popular - Flexible, transportes múltiples
-Pino ← Más rápido - Performance-focused, JSON logging
-log4js - Familiar para devs Java
-Bunyan - JSON nativo, streams
-Validación
-class-validator ← Recomendado con NestJS - Decorators, TypeScript
-Joi - Schema-based, flexible
-Yup - Schema-based, chainable
-Zod - TypeScript-first, type inference
-16. MEJORES PRÁCTICAS
-🎯 Código
-✅ Usar TypeScript strict mode
-✅ Evitar any, usar tipos específicos o unknown
-✅ Preferir composición sobre herencia
-✅ Funciones puras donde sea posible
-✅ Inmutabilidad de datos (usar readonly, spread operators)
-✅ Separar lógica de negocio de infraestructura
-✅ Usar interfaces para contratos
-TypeScript
-// ❌ Mal
-function processOrder(order: any) {
-  order.status = 'processed';
-  return order;
-}
+```
 
-// ✅ Bien
-interface Order {
-  readonly id: string;
-  readonly status: OrderStatus;
-}
+---
 
-function processOrder(order: Order): Order {
-  return {
-    ...order,
-    status: OrderStatus.PROCESSED,
-  };
-}
-🧪 Testing
-✅ Test unitarios para lógica de negocio
-✅ Integration tests para APIs y servicios externos
-✅ Mocks para dependencias externas
-✅ Coverage > 80% para código crítico
-✅ TDD para features complejas
-✅ Tests legibles (AAA: Arrange, Act, Assert)
-TypeScript
-describe('OrdersService', () => {
-  let service: OrdersService;
-  let repository: MockType<OrdersRepository>;
+## 13. IMPLEMENTACIÓN PASO A PASO
 
-  beforeEach(() => {
-    // Arrange
-    repository = {
-      findById: jest.fn(),
-      save: jest.fn(),
-    };
-    service = new OrdersService(repository);
-  });
+### Fase 1: Setup Inicial (Semana 1)
 
-  describe('processOrder', () => {
-    it('should process order successfully', async () => {
-      // Arrange
-      const order = { id: '1', status:  OrderStatus.PENDING };
-      repository.findById.mockResolvedValue(order);
+- ✅ Inicializar proyecto Node.js + TypeScript
+- ✅ Configurar ESLint + Prettier
+- ✅ Setup Jest para testing
+- ✅ Configurar estructura de carpetas
+- ✅ Implementar configuración por ambientes (YAML)
+- ✅ Setup Docker y docker-compose
 
-      // Act
-      const result = await service. processOrder('1');
+### Fase 2: Framework Base (Semana 2-3)
 
-      // Assert
-      expect(result. status).toBe(OrderStatus.PROCESSED);
-      expect(repository.save).toHaveBeenCalledWith(result);
-    });
-  });
-});
-📝 Documentación
-✅ README completo con setup instructions
-✅ API documentation con OpenAPI/Swagger
-✅ Architecture Decision Records (ADRs)
-✅ Code comments para lógica compleja
-✅ Changelog mantenido
-✅ Diagramas de arquitectura
-🔐 Seguridad
-✅ Nunca commitear secrets
-✅ Usar variables de entorno para configuración sensible
-✅ Validar toda entrada de usuario
-✅ Sanitizar outputs (prevenir XSS)
-✅ Mantener dependencias actualizadas (npm audit)
-✅ Usar Helmet. js para headers de seguridad
-✅ Implementar rate limiting
-✅ JWT con expiración corta
-✅ HTTPS en producción
-⚡ Performance
-✅ Lazy loading donde aplique
-✅ Cache estratégico (Redis, in-memory)
-✅ Pagination en listas grandes
-✅ Compression habilitado (gzip/brotli)
-✅ Connection pooling para DB y HTTP
-✅ Timeouts apropiados
-✅ Async/await para I/O operations
-✅ Evitar N+1 queries
-🏗️ Deployment
-✅ Multi-stage Dockerfile para reducir tamaño
-✅ Health checks (liveness/readiness)
-✅ Graceful shutdown
-✅ Resource limits en Kubernetes
-✅ Horizontal Pod Autoscaling
-✅ Rolling updates con zero downtime
-Dockerfile
+- ✅ Implementar sistema de decoradores
+- ✅ Crear base classes (Command, Query, Entity)
+- ✅ Implementar Dispatcher/Mediator pattern
+- ✅ Setup Dependency Injection (NestJS/TypeDI)
+- ✅ Crear HttpClient con interceptors
+- ✅ Configurar módulos principales
+
+### Fase 3: Infrastructure (Semana 4)
+
+- ✅ Implementar logging con correlation IDs
+- ✅ Configurar Circuit Breaker
+- ✅ Implementar cache system
+- ✅ Setup error handling global
+- ✅ Crear middlewares (auth, validation)
+- ✅ Configurar guards e interceptors
+- ✅ Setup Swagger/OpenAPI
+
+### Fase 4: Primera Feature (Semana 5)
+
+- ✅ Implementar una feature completa (ej: Users)
+- ✅ Crear controlador con decoradores
+- ✅ Implementar Commands y Queries
+- ✅ Crear handlers y servicios
+- ✅ Implementar proxy services
+- ✅ Crear tests unitarios e integración
+- ✅ Documentar con Swagger
+
+### Fase 5: DevOps (Semana 6)
+
+- ✅ Crear Dockerfile multi-stage
+- ✅ Configurar docker-compose para local
+- ✅ Setup CI/CD pipeline (GitLab/GitHub)
+- ✅ Configurar health checks y probes
+- ✅ Crear manifests de Kubernetes/OpenShift
+- ✅ Deploy a ambiente de desarrollo
+- ✅ Configurar SonarQube
+
+---
+
+## 14. CHECKLIST DE CALIDAD
+
+### 📋 Code Quality
+
+- [ ] Cobertura de tests > 80%
+- [ ] Linting sin errores
+- [ ] Type safety sin `any` explícitos
+- [ ] Documentación de código (JSDoc/TSDoc)
+- [ ] Code review aprobado
+- [ ] SonarQube quality gate passed
+
+### 🔒 Seguridad
+
+- [ ] Dependencias sin vulnerabilidades críticas (`npm audit`)
+- [ ] Secrets no en código (usar variables de entorno)
+- [ ] HTTPS enforced en producción
+- [ ] Rate limiting implementado
+- [ ] Input validation en todos los endpoints
+- [ ] JWT con expiración configurada
+- [ ] Helmet.js configurado
+- [ ] CORS restrictivo
+
+### ⚡ Performance
+
+- [ ] Response time < 200ms (endpoints simples)
+- [ ] Cache implementado donde corresponde
+- [ ] Connection pooling configurado
+- [ ] Timeouts apropiados en HTTP clients
+- [ ] Payload size limits configurados
+
+### 📊 Observabilidad
+
+- [ ] Logging estructurado (JSON)
+- [ ] Correlation IDs en todas las requests
+- [ ] Health checks funcionando (liveness/readiness)
+- [ ] Error tracking configurado
+- [ ] Request/Response logging
+
+### 🏗️ Deployment
+
+- [ ] Dockerfile optimizado (multi-stage)
+- [ ] Image size < 500MB
+- [ ] CI/CD pipeline funcionando
+- [ ] Kubernetes/OpenShift manifests validados
+- [ ] Probes configuradas correctamente
+- [ ] Resource limits definidos
+- [ ] ConfigMaps y Secrets externalizados
+
+---
+
+## 15. TECNOLOGÍAS ALTERNATIVAS
+
+### Framework Web
+
+- **Express.js** - Minimalista, flexible, gran ecosistema
+- **NestJS** ← **Recomendado para BFF** - Opinionado, modular, TypeScript-first
+- **Fastify** - Más rápido, moderno, schema-based
+- **Koa** - Minimalista, del team de Express
+
+### Dependency Injection
+
+- **NestJS DI Container** ← **Recomendado si usas NestJS**
+- **TypeDI** - Decorators, similar a NestJS
+- **InversifyJS** - Más maduro, SOLID-compliant
+- **TSyringe** - Microsoft, lightweight
+- **Awilix** - Simple y efectivo
+
+---
+
+## 16. MEJORES PRÁCTICAS
+
+### 🎯 Código
+
+- ✅ Usar TypeScript **strict mode**
+- ✅ Evitar `any`, usar tipos específicos o `unknown`
+- ✅ Preferir **composición sobre herencia**
+- ✅ Funciones puras donde sea posible
+- ✅ Inmutabilidad de datos (usar `readonly`, spread operators)
+- ✅ Separar lógica de negocio de infraestructura
+- ✅ Usar interfaces para contratos
+
+### 🔐 Seguridad
+
+- ✅ **Nunca** commitear secrets
+- ✅ Usar **variables de entorno** para configuración sensible
+- ✅ **Validar toda entrada** de usuario
+- ✅ **Sanitizar outputs** (prevenir XSS)
+- ✅ Mantener **dependencias actualizadas** (`npm audit`)
+- ✅ Usar **Helmet. js** para headers de seguridad
+- ✅ Implementar **rate limiting**
+- ✅ **JWT con expiración** corta
+- ✅ **HTTPS** en producción
+
+### ⚡ Performance
+
+- ✅ **Lazy loading** donde aplique
+- ✅ **Cache estratégico** (Redis, in-memory)
+- ✅ **Pagination** en listas grandes
+- ✅ **Compression** habilitado (gzip/brotli)
+- ✅ **Connection pooling** para DB y HTTP
+- ✅ **Timeouts** apropiados
+- ✅ **Async/await** para I/O operations
+- ✅ Evitar **N+1 queries**
+
+### 🏗️ Deployment
+
+- ✅ **Multi-stage Dockerfile** para reducir tamaño
+- ✅ **Health checks** (liveness/readiness)
+- ✅ **Graceful shutdown**
+- ✅ **Resource limits** en Kubernetes
+- ✅ **Horizontal Pod Autoscaling**
+- ✅ **Rolling updates** con zero downtime
+
+```dockerfile
 # Multi-stage Dockerfile
-FROM node: 18-alpine AS builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production
-COPY . .
+COPY . . 
 RUN npm run build
 
 FROM node:18-alpine AS production
@@ -1178,116 +1292,165 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 CMD ["node", "dist/main.js"]
-17. RESUMEN EJECUTIVO
-Esta arquitectura representa un BFF (Backend for Frontend) enterprise-grade que implementa:
+```
 
-✅ Arquitectura
-Clean Architecture + DDD + CQRS + Dispatcher/Mediator
-Layered Architecture con separación clara de responsabilidades
-Request-scoped services para contexto aislado
-Metadata-driven con decorators
-✅ Framework & Stack
-NestJS (opcionalmente Express) con TypeScript 5+
-Dependency Injection completa
-Request/Response Pipeline con interceptors
-Custom decorators para extensibilidad
-✅ Resiliencia
-Circuit Breakers para protección contra fallos
-Retry strategies con backoff exponencial
-Timeouts configurables
-Graceful degradation
-✅ Observabilidad
-Structured logging (JSON)
-Correlation IDs end-to-end
-Request/Response tracking
-Health checks (liveness/readiness)
-Metrics (opcional: Prometheus)
-✅ Seguridad
-JWT Authentication con guards
-Input validation automática
-Rate limiting
-Helmet.js security headers
-CORS configurable
-Secrets management externalized
-✅ Testing
-Unit tests con Jest (>80% coverage)
-Integration tests para APIs
-E2E tests (opcional)
-Mocking de dependencias
-✅ CI/CD
-Automated pipeline (GitLab CI / GitHub Actions)
-Quality gates (SonarQube)
-Docker containerization
-Kubernetes/OpenShift deployment
-GitFlow strategy
-✅ Configuración
-Multi-environment (YAML configs)
-Environment variables para secrets
-Feature flags support
-18. CASOS DE USO IDEALES
-🏦 Aplicaciones Financieras
-Alta seguridad requerida (JWT, encryption)
-Trazabilidad completa (correlation IDs)
-Resiliencia crítica (circuit breakers)
-🛒 E-commerce de Alto Tráfico
-Escalabilidad horizontal
-Cache strategies
-Performance optimization
-🏥 Sistemas de Salud
-Compliance y auditoría
-Logging exhaustivo
-Validación estricta
-📱 Mobile Backends
-BFF pattern ideal
-Optimización de payloads
-Versionado de APIs
-🎮 Gaming Platforms
-Low latency
-Alta concurrencia
-Real-time capabilities
-🚀 Cualquier Sistema que Requiera
-✅ Alta disponibilidad (99.9%+)
-✅ Escalabilidad horizontal
-✅ Observabilidad completa
-✅ Seguridad por diseño
-✅ Mantenibilidad a largo plazo
-19. PRÓXIMOS PASOS
-Para Empezar
-Clonar template o inicializar proyecto
-Configurar ambientes (development, staging, production)
-Implementar primera feature completa
-Setup CI/CD pipeline
-Deploy a desarrollo
-Para Escalar
-Añadir más features siguiendo la estructura
-Implementar cache (Redis)
-Añadir métricas (Prometheus)
-Configurar APM (Application Performance Monitoring)
-Implementar rate limiting avanzado
-Para Optimizar
-Analizar performance con profiling
-Optimizar queries y reducir N+1
-Implementar CDN para assets estáticos
-Configurar load balancing
-Horizontal Pod Autoscaling
-📚 Referencias
-[Clean Architecture (Robert C. Martin)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture. html)
-Domain-Driven Design (Eric Evans)
-CQRS Pattern (Martin Fowler)
-Microservices Patterns (Chris Richardson)
-The Twelve-Factor App
-NestJS Documentation
-TypeScript Handbook
-Node.js Best Practices
-Versión: 2.0.0
-Última actualización: 2025-12-31
-Autor: Facundo Bettella
-Repositorio: FacundoBettella/Microfront-Arq
+---
 
-📄 Licencia
-Este documento es de uso libre para propósitos educativos y comerciales.
+## 17. RESUMEN EJECUTIVO
 
+Esta arquitectura representa un **BFF (Backend for Frontend) enterprise-grade** que implementa:
 
+### ✅ Arquitectura
 
+- **Clean Architecture + DDD + CQRS + Dispatcher/Mediator**
+- **Layered Architecture** con separación clara de responsabilidades
+- **Request-scoped services** para contexto aislado
+- **Metadata-driven** con decorators
 
+### ✅ Framework & Stack
 
+- **NestJS** (opcionalmente Express) con **TypeScript 5+**
+- **Dependency Injection** completa
+- **Request/Response Pipeline** con interceptors
+- **Custom decorators** para extensibilidad
+
+### ✅ Resiliencia
+
+- **Circuit Breakers** para protección contra fallos
+- **Retry strategies** con backoff exponencial
+- **Timeouts** configurables
+- **Graceful degradation**
+
+### ✅ Observabilidad
+
+- **Structured logging** (JSON)
+- **Correlation IDs** end-to-end
+- **Request/Response tracking**
+- **Health checks** (liveness/readiness)
+- **Metrics** (opcional:  Prometheus)
+
+### ✅ Seguridad
+
+- **JWT Authentication** con guards
+- **Input validation** automática
+- **Rate limiting**
+- **Helmet.js** security headers
+- **CORS** configurable
+- **Secrets management** externalized
+
+### ✅ Testing
+
+- **Unit tests** con Jest (>80% coverage)
+- **Integration tests** para APIs
+- **E2E tests** (opcional)
+- **Mocking** de dependencias
+
+### ✅ CI/CD
+
+- **Automated pipeline** (GitLab CI / GitHub Actions)
+- **Quality gates** (SonarQube)
+- **Docker** containerization
+- **Kubernetes/OpenShift** deployment
+- **GitFlow** strategy
+
+### ✅ Configuración
+
+- **Multi-environment** (YAML configs)
+- **Environment variables** para secrets
+- **Feature flags** support
+
+---
+
+## 18. CASOS DE USO IDEALES
+
+### 🏦 Aplicaciones Financieras
+
+- Alta seguridad requerida (JWT, encryption)
+- Trazabilidad completa (correlation IDs)
+- Resiliencia crítica (circuit breakers)
+
+### 🛒 E-commerce de Alto Tráfico
+
+- Escalabilidad horizontal
+- Cache strategies
+- Performance optimization
+
+### 🏥 Sistemas de Salud
+
+- Compliance y auditoría
+- Logging exhaustivo
+- Validación estricta
+
+### 📱 Mobile Backends
+
+- BFF pattern ideal
+- Optimización de payloads
+- Versionado de APIs
+
+### 🎮 Gaming Platforms
+
+- Low latency
+- Alta concurrencia
+- Real-time capabilities
+
+### 🚀 Cualquier Sistema que Requiera
+
+- ✅ Alta disponibilidad (99.9%+)
+- ✅ Escalabilidad horizontal
+- ✅ Observabilidad completa
+- ✅ Seguridad por diseño
+- ✅ Mantenibilidad a largo plazo
+
+---
+
+## 19. PRÓXIMOS PASOS
+
+### Para Empezar
+
+1. **Clonar template** o inicializar proyecto
+2. **Configurar ambientes** (development, staging, production)
+3. **Implementar primera feature** completa
+4. **Setup CI/CD** pipeline
+5. **Deploy a desarrollo**
+
+### Para Escalar
+
+1. **Añadir más features** siguiendo la estructura
+2. **Implementar cache** (Redis)
+3. **Añadir métricas** (Prometheus)
+4. **Configurar APM** (Application Performance Monitoring)
+5. **Implementar rate limiting** avanzado
+
+### Para Optimizar
+
+1. **Analizar performance** con profiling
+2. **Optimizar queries** y reducir N+1
+3. **Implementar CDN** para assets estáticos
+4. **Configurar load balancing**
+5. **Horizontal Pod Autoscaling**
+
+---
+
+## 📚 Referencias
+
+- [Clean Architecture (Robert C. Martin)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture. html)
+- [Domain-Driven Design (Eric Evans)](https://www.domainlanguage.com/ddd/)
+- [CQRS Pattern (Martin Fowler)](https://martinfowler.com/bliki/CQRS.html)
+- [Microservices Patterns (Chris Richardson)](https://microservices.io/patterns/index.html)
+- [The Twelve-Factor App](https://12factor.net/)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
+- [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
+
+---
+
+**Versión**:  2.0.0  
+**Última actualización**: 2025-12-31  
+**Autor**: Facundo Bettella  
+**Repositorio**: [FacundoBettella/Microfront-Arq](https://github.com/FacundoBettella/Microfront-Arq)
+
+---
+
+## 📄 Licencia
+
+Este documento es de uso libre para propósitos educativos y comerciales. 
